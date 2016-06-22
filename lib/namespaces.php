@@ -1,4 +1,5 @@
 <?php
 return array(
-    'Application' => 'lib/Application'
+    'Application' => 'lib/Application',
+    'DataBase' => 'lib/DataBase'
 );
