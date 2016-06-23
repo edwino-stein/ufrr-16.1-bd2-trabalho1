@@ -17,7 +17,6 @@ abstract class ModelBase{
     const ORDER_DIRECTION_DESC = 'DESC';
     const GENERIC_SELECT = 'SELECT * FROM {table} {order} {direction} {limit}';
     const FIND_SELECT = 'SELECT * FROM {table} {where} {order} {direction} {limit}';
-    const FIND_ONE_SELECT = 'SELECT * FROM {table} {where} LIMIT 0,1';
     const INSERT = 'INSERT INTO {table} ({columns}) VALUES ({data})';
     const UPDATE = 'UPDATE {table} SET {setters} {where}';
     const DELETE = 'DELETE FROM {table} {where}';
@@ -189,14 +188,13 @@ abstract class ModelBase{
         //Serializa as colunas
         foreach ($schemaCols as $property => $schema){
 
-            $columns[] = $schema['name'];
-
             //Guarda o id e define o valor como NULL
             if($schema['id']){
                 $idColumn = $property;
-                $data[] = Types::prepareToQuery(null, null);
                 continue;
             }
+
+            $columns[] = $schema['name'];
 
             //Converte o valor da coluna para o formato utilizado na SQL
             $value = Types::prepareToQuery($this->_get($property), $schema['type']);
@@ -339,18 +337,23 @@ abstract class ModelBase{
         $modelName = get_called_class();
         $tableSchema = self::getTableSchema($modelName);
 
+        $options = self::parseOptions(array('limit' => 1, 'offset' => 0), $tableSchema);
+
         //Se o parametro $where for um array, instancia um objeto de DataBase\Where
         if(is_array($where)) $where = Where::parseArray($where);
         if(!($where instanceof Where)) throw Errors::getException(Errors::WHERE_PARAM_INVALID);
 
         //Realia a operação SELECT
         $result = self::execQuery(
-            array('{table}', '{where}'),
+            array('{table}', '{where}', '{order}', '{direction}', '{limit}'),
             array(
                 $tableSchema->getTableName(),
                 $where->getSqlSnippet($tableSchema),
+                $options['orderby'],
+                $options['direction'],
+                $options['limit'],
             ),
-            self::FIND_ONE_SELECT
+            self::FIND_SELECT
         );
 
         //Instancia a model retornada
@@ -376,7 +379,6 @@ abstract class ModelBase{
             $query->execute();
         }
         catch(\Exception $e){
-
             $code = 0;
             switch ($e->getCode()) {
                 case '42S02':
@@ -462,11 +464,21 @@ abstract class ModelBase{
         $offset = isset($options['offset']) ? (int) $options['offset'] : 0;
         unset($options['offset']);
 
-        if($limit > 0){
-            $options['limit'] = 'LIMIT '.($offset >= 0 ? $offset.',' : '0,').$limit;
+        if(Connection::getConnection()->config('driver') === 'pgsql'){
+            if($limit > 0){
+                $options['limit'] = 'LIMIT '.$limit.($offset >= 0 ? ' OFFSET '.$offset : '');
+            }
+            else{
+                $options['limit'] = '';
+            }
         }
         else{
-            $options['limit'] = '';
+            if($limit > 0){
+                $options['limit'] = 'LIMIT '.($offset >= 0 ? $offset.',' : '0,').$limit;
+            }
+            else{
+                $options['limit'] = '';
+            }
         }
 
         return $options;

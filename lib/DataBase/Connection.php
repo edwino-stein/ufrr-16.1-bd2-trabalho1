@@ -26,6 +26,7 @@ class Connection {
     }
 
     protected $pdoConnection;
+    protected $config;
 
     protected function __construct($config){
 
@@ -41,6 +42,12 @@ class Connection {
             $code = isset(self::$erros[$e->getCode()]) ? self::$erros[$e->getCode()] : Errors::UNKNOW_ERROR;
             throw Errors::getException(self::$erros[$e->getCode()], $e);
         }
+        $this->config = $config;
+    }
+
+    public function config($key = null){
+        if($key === null) return $this->config;
+        return isset($this->config[$key]) ? $this->config[$key] : $this->config;
     }
 
     public function query($sql){
@@ -91,7 +98,10 @@ class Connection {
                 self::DSN_TEMPLATE
             ),
             'username' => isset($config['user']) ? $config['user'] : $defaultConfig['user'],
-            'password' => isset($config['password']) ? $config['password'] : $defaultConfig['password']
+            'password' => isset($config['password']) ? $config['password'] : $defaultConfig['password'],
+            'driver' => isset($config['driver']) ? $config['driver'] : $defaultConfig['driver'],
+            'host' => isset($config['host']) ? $config['host'] : $defaultConfig['host'],
+            'dbname' => isset($config['dbname']) ? $config['dbname'] : $defaultConfig['dbname']
         );
     }
 
