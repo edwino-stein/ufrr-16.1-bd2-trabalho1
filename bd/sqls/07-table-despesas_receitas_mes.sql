@@ -9,7 +9,10 @@ CREATE TABLE public.despesas_receitas_mes
 INHERITS (public.dispesas_receitas)
 WITH (
   OIDS = FALSE
-)
-;
+);
+
+ALTER TABLE despesas_receitas_mes
+  ADD PRIMARY KEY (id);
+
 ALTER TABLE public.despesas_receitas_mes
   OWNER TO db2;

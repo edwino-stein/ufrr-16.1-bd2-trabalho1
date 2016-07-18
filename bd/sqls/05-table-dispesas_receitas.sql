@@ -4,7 +4,7 @@
 CREATE TABLE public.dispesas_receitas
 (
   id serial,
-  descricao character varying(20) NOT NULL,
+  descricao character varying(100) NOT NULL,
   valor real NOT NULL,
   CONSTRAINT dispesas_receitas_pkey PRIMARY KEY (id)
 )
