@@ -233,7 +233,7 @@ abstract class ModelBase{
         if($idColumn !== null){
             $this->_set(
                 $idColumn,
-                Connection::getLastInsertId(),
+                Connection::getLastInsertId($tableSchema),
                 $schemaCols[$idColumn]
             );
         }

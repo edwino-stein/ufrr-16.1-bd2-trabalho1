@@ -25,6 +25,7 @@ class TableSchema{
     }
 
     protected $name;
+    protected $sequence;
     protected $columns;
 
     public function __construct($model){
@@ -45,10 +46,25 @@ class TableSchema{
         $propertiesAnnotations = Parser::getAnnotationsArray($reflection->getProperties());
         foreach ($propertiesAnnotations as $name => $property)
             $this->addColumn($name, $property);
+
+        //Pega o nome da sequecia de geração do id da tabela
+        $idCol = $this->getIdColumn();
+        if($idCol === null) return;
+        if($classAnnotation !== null && $classAnnotation->hasTag('seq')){
+            $this->sequence = $classAnnotation->getTagValue('seq');
+            if($this->sequence === true) $this->sequence = $this->name.'_'.$idCol['name'].'_seq';
+        }
+        else{
+            $this->sequence = $this->name.'_'.$idCol['name'].'_seq';
+        }
     }
 
     public function getTableName(){
         return $this->name;
+    }
+
+    public function getTableSeq(){
+        return $this->sequence;
     }
 
     public function getColumn($propertyName){
@@ -70,6 +86,8 @@ class TableSchema{
                 return $column;
             }
         }
+
+        return null;
     }
 
     public function getColumnByName($columnName, &$propertyName){

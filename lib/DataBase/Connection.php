@@ -79,8 +79,13 @@ class Connection {
         self::$instance = new self(self::parseConfg($config));
     }
 
-    public static function getLastInsertId(){
-        return self::$instance->pdoConnection->lastInsertId();
+    public static function getLastInsertId($tableSchema = null){
+        if(self::getConnection()->config('driver') === 'pgsql' && $tableSchema !== null){
+            return self::$instance->pdoConnection->lastInsertId($tableSchema->getTableSeq());
+        }
+        else{
+            return self::$instance->pdoConnection->lastInsertId();
+        }
     }
 
     protected static function parseConfg($config){
