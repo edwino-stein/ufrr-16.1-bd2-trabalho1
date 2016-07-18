@@ -7,7 +7,7 @@ use Financas\Model\Usuario;
 /**
  * @table financas
  */
-class Financas extends ModelBase{
+class Financa extends ModelBase{
 
     /**
      * @var int
