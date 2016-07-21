@@ -1,10 +1,23 @@
+<?php
+$baseUri = $this->app()->request()->getBaseUri();
+?>
 <!DOCTYPE html>
 <html>
     <head>
-        <meta charset="utf-8">
-        <title></title>
+        <meta charset="<?=$this->charset ?>">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+        <title><?=$this->title ?></title>
+
+        <!--Styles -->
+        <link rel="stylesheet" href="<?=$baseUri ?>css/bootstrap.min.css">
+
+        <!-- Scripts -->
+        <script type="text/javascript" src="<?=$baseUri ?>js/jquery-2.1.4.min.js"></script>
+        <script type="text/javascript" src="<?=$baseUri ?>js/bootstrap.min.js"></script>
+
     </head>
     <body>
-        <?=$this->content ?>
+        <div class="container"><?=$this->content ?></div>
     </body>
 </html>
