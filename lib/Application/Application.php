@@ -190,4 +190,8 @@ abstract class Application {
             }
         }
     }
+
+    public static function redirect($url){
+        header("Location: ".$url);
+    }
 }
