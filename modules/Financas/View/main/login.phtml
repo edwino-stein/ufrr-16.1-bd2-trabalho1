@@ -1,0 +1,36 @@
+
+<div class="page-header">
+  <h1>Tela de login</h1>
+</div>
+
+<?php if(!empty($this->message)) : ?>
+    <div class="alert alert-<?=$this->error ? 'danger' : 'success' ?>" role="alert">
+        <?=$this->message ?>
+    </div>
+<?php endif; ?>
+
+<?php if(isset($this->error) && $this->error) : ?>
+<div class="col-xs-12 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3 col-lg-4 col-lg-offset-4">
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <form method="post">
+                <div class="form-group">
+                    <label for="user-login">Login</label>
+                    <input type="text" class="form-control" id="user-login" name="user-login" >
+                </div>
+                <div class="form-group">
+                    <label for="user-passwd">Senha</label>
+                    <input type="password" class="form-control" id="user-passwd" name="user-passwd" >
+                </div>
+                <div class="form-group">
+                    <input type="submit" class="btn btn-primary btn-block" value="Entrar">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<?php endif ?>
+
+<div class="col-xs-12" style="text-align: center; margin-bottom: 30px;">
+    <a href="<?=$this->url('main', 'index', array(), true) ?>">Ir para o ínicio</a>
+</div>
