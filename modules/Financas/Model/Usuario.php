@@ -59,9 +59,13 @@ class Usuario extends ModelBase{
         return $this;
     }
 
-    public function setSenha($senha){
-        $this->senha = md5($senha);
+    public function setSenha($senha, $asMD5 = false){
+        $this->senha = $asMD5 ? md5($senha) : $senha;
         return $this;
+    }
+
+    public function matchSenha($senha){
+        return $this->senha === md5($senha);
     }
 
     public function getId(){
