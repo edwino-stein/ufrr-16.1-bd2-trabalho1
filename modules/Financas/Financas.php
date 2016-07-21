@@ -18,7 +18,7 @@ class Financas extends Application{
             'noTemplate' => false,
             'defaultTemplate' => 'template.phtml'
         ),
-        'defaultController' => 'main'
+        'defaultController' => 'site'
     );
 
     protected function init(){

@@ -3,7 +3,7 @@ namespace Financas\Controller;
 use Application\AbstractController;
 use Financas\Model\Usuario;
 
-class Main extends AbstractController{
+class Site extends AbstractController{
 
     public function indexAction(){
         return self::getView(array());
