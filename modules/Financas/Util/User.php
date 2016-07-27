@@ -36,7 +36,7 @@ class User{
 
     public function clean(){
         $this->data = null;
-        Session::unset($this->sessionName);
+        Session::remove($this->sessionName);
     }
 
     public static function init($sessionName){

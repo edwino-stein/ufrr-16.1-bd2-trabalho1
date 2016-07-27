@@ -18,7 +18,7 @@ abstract class Session {
         return self::has($key, true) ? $_SESSION[$key] : $default;
     }
 
-    public static function unset($key){
+    public static function remove($key){
         if(self::has($key)) unset($_SESSION[$key]);
     }
 
