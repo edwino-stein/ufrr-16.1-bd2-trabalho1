@@ -2,10 +2,12 @@
 namespace Financas\Controller;
 use Application\AbstractController;
 use Financas\Model\Usuario;
+use Financas\Util\ValidateException;
 
 class Site extends AbstractController{
 
     public function indexAction(){
+        $session = $this->app()->user();
         return self::getView(array());
     }
 
@@ -56,5 +58,79 @@ class Site extends AbstractController{
     public function logoutAction(){
         $this->app()->user()->clean();
         $this->app()->redirect($this->request()->getBaseUri().'index.php');
+    }
+
+    public function singupAction(){
+
+        $session = $this->app()->user();
+        if(!$session->isGuest()){
+            $this->app()->redirect($this->request()->getBaseUri().'index.php');
+            return;
+        }
+
+        if($this->app()->request()->hasPost('singup-submit')){
+
+            $newUser = new Usuario();
+            $errors = array();
+            $map = array(
+                'singup-name' => 'nome',
+                'singup-lastname' => 'sobrenome',
+                'singup-login' => 'login',
+                'singup-passwd' => 'senha'
+            );
+
+            foreach ($map as $input => $property){
+                $method = 'set'.ucfirst($property);
+                try {
+                    $newUser->$method($this->app()->request()->getPost($input, null));
+                } catch (ValidateException $e) {
+                    $errors[$input] = $e->getMessage();
+                }
+            }
+
+            if(!empty($errors))return self::getView(array(
+                'error' => true,
+                'data' => $newUser,
+                'messages' => $errors
+            ));
+
+            try {
+                $newUser->save();
+            } catch (\Exception $e) {
+
+                $messages = array();
+                $exMessage = $e->getPrevException()->getMessage();
+                $exCode = $e->getPrevException()->getCode();
+
+                if($exCode == 23505){
+                    $messages['singup-login'] = explode(': ', $exMessage)[3];
+                }
+
+                return self::getView(array(
+                    'error' => true,
+                    'data' => $newUser,
+                    'messages' => $messages
+                ));
+            }
+
+            $session->setData(array(
+                'id' => $newUser->getId(),
+                'nome' => $newUser->getNome(),
+                'sobrenome' => $newUser->getSobrenome(),
+                'login' => $newUser->getLogin()
+            ));
+
+            return self::getView(array(
+                'error' => false,
+                'data' => $newUser,
+                'messages' => array('success' => 'Usuário cadastrado com sucesso!')
+            ));
+        }
+
+        return self::getView(array(
+            'error' => false,
+            'data' => null,
+            'messages' => array()
+        ));
     }
 }
