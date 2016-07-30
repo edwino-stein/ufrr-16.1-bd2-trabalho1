@@ -1,0 +1,68 @@
+<?php
+$baseUri = $this->app()->request()->getBaseUri();
+$session = $this->app()->user();
+
+$currentController = $this->app()->getControlerName();
+$menus = array(
+    array(
+        'label' => 'Mês',
+        'url' => $this->url('mes', 'index', array(), true),
+        'actived' => $currentController === 'mes'
+    ),
+    array(
+        'label' => 'Fixos',
+        'url' => $this->url('fixos', 'index', array(), true),
+        'actived' => $currentController === 'fixos'
+    )
+);
+
+?>
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="<?=$this->charset ?>">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+        <title><?=$this->title ?></title>
+
+        <!--Styles -->
+        <link rel="stylesheet" href="<?=$baseUri ?>css/bootstrap.min.css">
+
+        <!-- Scripts -->
+        <script type="text/javascript" src="<?=$baseUri ?>js/jquery-2.1.4.min.js"></script>
+        <script type="text/javascript" src="<?=$baseUri ?>js/bootstrap.min.js"></script>
+
+    </head>
+    <body>
+        <nav class="navbar navbar-default" style="border-radius: 0px;">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-container" aria-expanded="false">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand">Meus gastos</a>
+                </div>
+                <div class="collapse navbar-collapse" id="navbar-container">
+                    <ul class="nav navbar-nav">
+                        <?php foreach($menus as $item) : ?>
+                            <li <?=$item['actived'] ? 'class="active"' : ''?>>
+                                <a href="<?=$item['url'] ?>"><?=$item['label'] ?></a>
+                            </li>
+                        <?php endforeach; ?>
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><p class="navbar-text">Olá <strong><?=$session->getData('nome') ?></strong>!</p></li>
+                        <li><a href="<?=$this->url('site', 'logout', array(), true) ?>">
+                            <span class="glyphicon glyphicon-log-out" aria-hidden="true"></span>
+                            Sair
+                        </a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <div class="container"><?=$this->content ?></div>
+    </body>
+</html>

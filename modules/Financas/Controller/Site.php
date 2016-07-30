@@ -9,6 +9,10 @@ class Site extends AbstractController{
     public function indexAction(){
         $session = $this->app()->user();
         $this->template->setLayoutPath('site-template.phtml');
+
+        if(!$session->isGuest())
+            $this->app()->redirect($this->request()->getBaseUri().'index.php/mes/index');
+
         return self::getView(array());
     }
 
@@ -66,7 +70,7 @@ class Site extends AbstractController{
 
     public function singupAction(){
         $this->template->setLayoutPath('site-template.phtml');
-        
+
         $session = $this->app()->user();
         if(!$session->isGuest()){
             $this->app()->redirect($this->request()->getBaseUri().'index.php');

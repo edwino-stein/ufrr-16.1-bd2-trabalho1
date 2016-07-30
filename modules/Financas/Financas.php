@@ -16,7 +16,7 @@ class Financas extends Application{
             'charset' => 'UTF-8',
             'contentName' => 'content',
             'noTemplate' => false,
-            'defaultTemplate' => 'template.phtml'
+            'defaultTemplate' => 'main-template.phtml'
         ),
         'defaultController' => 'site'
     );
