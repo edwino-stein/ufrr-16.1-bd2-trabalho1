@@ -1,6 +1,7 @@
 <?php
 namespace Financas\Controller;
 use Application\AbstractController;
+use Financas\Model\DispesaReceitaFixa;
 use Financas\Util\ValidateException;
 
 class Fixos extends AbstractController{
@@ -11,6 +12,14 @@ class Fixos extends AbstractController{
         if($session->isGuest())
             $this->app()->redirect($this->request()->getBaseUri().'index.php');
 
-        return self::getView(array());
+        $fixos = DispesaReceitaFixa::findBy(
+            array('usuario' => $session->getData('id')),
+            array('orderby' => 'valor', 'direction' => 'DESC')
+        );
+
+        return self::getView(array(
+            'data' => $fixos,
+            'total' => count($fixos)
+        ));
     }
 }
