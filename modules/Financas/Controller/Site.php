@@ -8,10 +8,13 @@ class Site extends AbstractController{
 
     public function indexAction(){
         $session = $this->app()->user();
+        $this->template->setLayoutPath('site-template.phtml');
         return self::getView(array());
     }
 
     public function loginAction(){
+
+        $this->template->setLayoutPath('site-template.phtml');
 
         $session = $this->app()->user();
         if(!$session->isGuest()) return self::getView(array(
@@ -56,12 +59,14 @@ class Site extends AbstractController{
     }
 
     public function logoutAction(){
+        $this->template->setLayoutPath('site-template.phtml');
         $this->app()->user()->clean();
         $this->app()->redirect($this->request()->getBaseUri().'index.php');
     }
 
     public function singupAction(){
-
+        $this->template->setLayoutPath('site-template.phtml');
+        
         $session = $this->app()->user();
         if(!$session->isGuest()){
             $this->app()->redirect($this->request()->getBaseUri().'index.php');
