@@ -5,9 +5,9 @@
 
     <div class="panel-heading" style="position: relative">
         <span class="panel-title">Suas despesas ou receitas que são fixas todos os meses:</span>
-        <a href="#" class="btn btn-xs btn-success" style="position: absolute; top: 50%; right: 15px; margin-top: -11px;">
+        <a href="<?=$this->url('fixos', 'create', array(), true) ?>" class="btn btn-xs btn-success" style="position: absolute; top: 50%; right: 15px; margin-top: -11px;">
             <span class="glyphicon glyphicon-asterisk" aria-hidden="true"></span>
-            <span class="visible-lg-inline">Adicionar</span>
+            <span class="visible-lg-inline visible-md-inline">Adicionar</span>
         </a>
     </div>
     <?php if($this->total > 0) : ?>
@@ -31,7 +31,7 @@
                             <?=number_format(abs($item->getValor()), 2, ',', '.') ?>
                         </td>
                         <td>
-                            <a href="#" class="btn btn-xs btn-primary" title="Editar">
+                            <a href="<?=$this->url('fixos', 'update', array('fixo_id' => $item->getId()), true) ?>" class="btn btn-xs btn-primary" title="Editar">
                                 <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
                                 <span class="visible-lg-inline">Editar</span>
                             </a>

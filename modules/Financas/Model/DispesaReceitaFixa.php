@@ -4,6 +4,7 @@ namespace Financas\Model;
 use DataBase\ModelBase;
 use DataBase\Types;
 use Financas\Model\Usuario;
+use Financas\Util\ValidateException;
 
 /**
  * @table dispesas_receitas_fixas
@@ -41,7 +42,7 @@ class DispesaReceitaFixa extends ModelBase{
     protected $usuario;
 
     public function getId(){
-        return $this->id;
+        return $this->id !== null ? $this->id : 0;
     }
 
     public function getDescricao(){
@@ -57,12 +58,19 @@ class DispesaReceitaFixa extends ModelBase{
     }
 
     public function setDescricao($descricao){
+
         $this->descricao = $descricao;
+        if(empty($descricao)) throw new ValidateException("descricao", "O campo é obrigatório.");
+        if(strlen($descricao) > 100) throw new ValidateException("descricao", "Tamanho máximo é 100 caractere.");
+
         return $this;
     }
 
     public function setValor($valor){
+
         $this->valor = Types::casting($valor, 'float');
+        if((float) $valor == 0) throw new ValidateException("valor", "O valor deve ser diferente de zero.");
+
         return $this;
     }
 

@@ -1,0 +1,63 @@
+
+<div class="page-header">
+  <h1><?=$this->title ?></h1>
+</div>
+
+<?php if(isset($this->messages['generic'])): ?>
+    <div class="alert alert-<?=$this->error ? 'danger' : 'success'?>" role="alert">
+        <?=$this->messages['generic'] ?>
+    </div>
+<?php endif ?>
+
+<?php if($this->data !== false) : ?>
+    <div class="col-xs-12 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3 col-lg-4 col-lg-offset-4">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <form method="post" action="<?=$this->url('fixos', 'save', array(), true) ?>">
+
+                    <div class="form-group <?=isset($this->messages['fixo-descricao']) ? 'has-error' : '' ?>" >
+                        <label for="fixo-descricao" class="control-label">Descrição</label>
+                        <input type="text" class="form-control" id="fixo-descricao" name="fixo-descricao" maxlength="100" value="<?=$this->data !== null ? $this->data->getDescricao() : '' ?>">
+                        <?php if(isset($this->messages['fixo-descricao'])): ?>
+                            <span class="help-block" ><?=$this->messages['fixo-descricao'] ?></span>
+                        <?php endif ?>
+                    </div>
+
+                    <div class="form-group <?=isset($this->messages['fixo-valor']) ? 'has-error' : '' ?>">
+                        <label for="fixo-valor" class="control-label">Valor (R$)</label>
+                        <input type="number" min="0.1" step="any" class="form-control" id="fixo-valor" name="fixo-valor" value="<?=$this->data !== null ? abs($this->data->getValor()) : '' ?>">
+                        <?php if(isset($this->messages['fixo-valor'])): ?>
+                            <span class="help-block" ><?=$this->messages['fixo-valor'] ?></span>
+                        <?php endif ?>
+                    </div>
+
+                    <div class="form-group container-fluid" style="padding: 0;">
+                        <label class="col-xs-12" style="padding: 0;">Tipo</label>
+                        <div class="radio col-xs-12 col-sm-6">
+                            <label>
+                                <input type="radio" name="fixo-tipo" value="receita" <?=$this->data === null || ($this->data !== null && $this->data->getValor() >= 0) ? 'checked' : ''?> >
+                                Receita
+                            </label>
+                        </div>
+                        <div class="radio col-xs-12 col-sm-6" style="margin-top: 10px;">
+                            <label>
+                                <input type="radio" name="fixo-tipo" value="despesa" <?=$this->data !== null && $this->data->getValor() < 0 ? 'checked' : ''?> >
+                                Despesa
+                            </label>
+                        </div>
+                    </div>
+
+                    <input type="hidden" name="fixo-id" value="<?=$this->data !== null ? $this->data->getId() : '0' ?>">
+
+                    <div class="form-group">
+                        <input type="submit" class="btn btn-success btn-block" value="Salvar" name="fixo-submit">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+<?php endif ?>
+
+<div class="col-xs-12" style="text-align: center; margin-bottom: 30px;">
+    <a href="<?=$this->url('fixos', 'index', array(), true) ?>">Voltar</a>
+</div>
