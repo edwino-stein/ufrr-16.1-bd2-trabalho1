@@ -1,7 +1,7 @@
 <?php
 namespace Financas\Controller;
 use Application\AbstractController;
-use Financas\Model\DispesaReceitaFixa;
+use Financas\Model\DespesaReceitaFixa;
 use Financas\Util\ValidateException;
 
 class Fixos extends AbstractController{
@@ -12,10 +12,16 @@ class Fixos extends AbstractController{
         if($session->isGuest())
             $this->app()->redirect($this->request()->getBaseUri().'index.php');
 
-        $fixos = DispesaReceitaFixa::findBy(
-            array('usuario' => $session->getData('id')),
-            array('orderby' => 'valor', 'direction' => 'DESC')
-        );
+        try {
+            $fixos = DespesaReceitaFixa::findBy(
+                array('usuario' => $session->getData('id')),
+                array('orderby' => 'valor', 'direction' => 'DESC')
+            );
+        } catch (\Exception $e) {
+            $fixos = array();
+        }
+
+
 
         return self::getView(array(
             'data' => $fixos,
@@ -51,7 +57,7 @@ class Fixos extends AbstractController{
             $title = 'Registrar despesa ou receita';
         }
         else{
-            $model = DispesaReceitaFixa::findOneBy(array('id' => $id, 'usuario' => $session->getData('id')));
+            $model = DespesaReceitaFixa::findOneBy(array('id' => $id, 'usuario' => $session->getData('id')));
             $title = 'Editar despesa ou receita';
         }
 
@@ -76,13 +82,13 @@ class Fixos extends AbstractController{
         $id = (int) $request->getPost('fixo-id', 0);
 
         if($id <= 0){
-            $model = new DispesaReceitaFixa();
+            $model = new DespesaReceitaFixa();
             $model->setUsuario($session->getData('id'));
         }
         else{
-            $model = DispesaReceitaFixa::findOneBy(array('id' => $id, 'usuario' => $session->getData('id')));
+            $model = DespesaReceitaFixa::findOneBy(array('id' => $id, 'usuario' => $session->getData('id')));
             if($model === null){
-                $model = new DispesaReceitaFixa();
+                $model = new DespesaReceitaFixa();
                 $model->setUsuario($session->getData('id'));
                 $id = 0;
             }
@@ -146,7 +152,7 @@ class Fixos extends AbstractController{
         if($id <= 0)
             $this->app()->redirect($this->request()->getBaseUri().'index.php/fixos/index');
 
-        $model = DispesaReceitaFixa::findOneBy(array('id' => $id, 'usuario' => $session->getData('id')));
+        $model = DespesaReceitaFixa::findOneBy(array('id' => $id, 'usuario' => $session->getData('id')));
         if($model === null)
             $this->app()->redirect($this->request()->getBaseUri().'index.php/fixos/index');
 

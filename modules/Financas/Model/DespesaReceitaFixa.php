@@ -7,10 +7,10 @@ use Financas\Model\Usuario;
 use Financas\Util\ValidateException;
 
 /**
- * @table dispesas_receitas_fixas
- * @seq dispesas_receitas_id_seq
+ * @table despesas_receitas_fixas
+ * @seq despesas_receitas_id_seq
  */
-class DispesaReceitaFixa extends ModelBase{
+class DespesaReceitaFixa extends ModelBase{
 
     /**
      * @var int
