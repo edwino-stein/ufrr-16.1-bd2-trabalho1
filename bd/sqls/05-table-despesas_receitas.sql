@@ -1,15 +1,15 @@
 -- Tabela de com generica com as despesas e receitas por mês do usuário
 -- Gerado no Postgresql 9.5
 
-CREATE TABLE public.dispesas_receitas
+CREATE TABLE public.despesas_receitas
 (
   id serial,
   descricao character varying(100) NOT NULL,
   valor real NOT NULL,
-  CONSTRAINT dispesas_receitas_pkey PRIMARY KEY (id)
+  CONSTRAINT despesas_receitas_pkey PRIMARY KEY (id)
 )
 WITH (
   OIDS=FALSE
 );
-ALTER TABLE public.dispesas_receitas
+ALTER TABLE public.d2spesas_receitas
   OWNER TO db2;
