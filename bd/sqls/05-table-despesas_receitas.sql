@@ -11,5 +11,5 @@ CREATE TABLE public.despesas_receitas
 WITH (
   OIDS=FALSE
 );
-ALTER TABLE public.d2spesas_receitas
+ALTER TABLE public.despesas_receitas
   OWNER TO db2;
