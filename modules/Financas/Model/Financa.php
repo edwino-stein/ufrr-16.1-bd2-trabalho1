@@ -1,5 +1,7 @@
 <?php
 namespace Financas\Model;
+use DataBase\Connection;
+use DataBase\Errors;
 use DataBase\ModelBase;
 use DataBase\Types;
 use Financas\Model\Usuario;
@@ -55,5 +57,42 @@ class Financa extends ModelBase{
 
     public function getMes(){
         return $this->mes;
+    }
+
+    public static function initMes($usuario){
+
+        if(!Connection::isInited()) throw Errors::getException(Errors::CONNECTION_NOT_SETTED);
+
+        $usuario = $usuario instanceof Usuario ? $usuario->getId() : (int) $usuario;
+        $query = Connection::getConnection()->createQuery('select init_mes('.$usuario.')');
+
+        //Executa a query ou captura o erro causado
+        try{
+            $query->execute();
+        }
+        catch(\Exception $e){
+            $code = 0;
+            switch ($e->getCode()) {
+                case '42S02':
+                    $code = Errors::TABLE_NOT_FOUND;
+                break;
+
+                case '42S22':
+                    $code = Errors::COLUMN_NOT_FOUND;
+                break;
+
+                case '42000':
+                    $code = Errors::SYNTAX_ERROR;
+                break;
+
+                default:
+                    $code = Errors::UNKNOW_ERROR;
+                break;
+            }
+
+            throw Errors::getException($code, $e);
+        }
+
+        return $query->fetch(\PDO::FETCH_OBJ)->init_mes == 1;
     }
 }
