@@ -13,6 +13,7 @@ class Financas extends Application{
             'password' => '123456'
         ),
         'view' => array(
+            'title' => 'Meus gastos',
             'charset' => 'UTF-8',
             'contentName' => 'content',
             'noTemplate' => false,

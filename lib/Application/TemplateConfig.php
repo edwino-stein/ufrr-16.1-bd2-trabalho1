@@ -14,6 +14,7 @@ class TemplateConfig {
         if(isset($config['charset'])) $this->setCharset($config['charset']);
         if(isset($config['contentName'])) $this->setContentName($config['contentName']);
         if(isset($config['noTemplate'])) $this->setNoTemplate($config['noTemplate']);
+        if(isset($config['title'])) $this->setTitle($config['title']);
     }
 
     public function getTitle(){
