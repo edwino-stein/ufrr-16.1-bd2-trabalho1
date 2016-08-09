@@ -31,11 +31,11 @@
                             <?=number_format(abs($item->getValor()), 2, ',', '.') ?>
                         </td>
                         <td>
-                            <a href="<?=$this->url('mes', 'update', array('fixo_id' => $item->getId()), true) ?>" class="btn btn-xs btn-primary" title="Editar">
+                            <a href="<?=$this->url('mes', 'update', array('financa_mes_id' => $item->getId()), true) ?>" class="btn btn-xs btn-primary" title="Editar">
                                 <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
                                 <span class="visible-lg-inline">Editar</span>
                             </a>
-                            <a href="<?=$this->url('mes', 'delete', array('fixo_id' => $item->getId()), true) ?>" class="btn btn-xs btn-danger" title="Remover">
+                            <a href="<?=$this->url('mes', 'delete', array('financa_mes_id' => $item->getId()), true) ?>" class="btn btn-xs btn-danger" title="Remover">
                                 <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
                                 <span class="visible-lg-inline">Remover</span>
                             </a>

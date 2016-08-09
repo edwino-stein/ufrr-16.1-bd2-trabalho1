@@ -123,7 +123,6 @@ class Fixos extends AbstractController{
         try {
             $model->save();
         } catch (\Exception $e) {
-            var_dump($e);
             return self::getView(array(
                 'title' => $title,
                 'data' => $model,
