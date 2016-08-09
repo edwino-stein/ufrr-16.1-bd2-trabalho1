@@ -1,0 +1,47 @@
+<div class="page-header">
+    <h1>Remover despesa/receita fixa</h1>
+</div>
+
+<?php if($this->data === null && !$this->error) : ?>
+    <div class="alert alert-success" role="alert">
+        A despesa/receita fixa foi removida com sucesso.
+    </div>
+<?php else: ?>
+
+    <?php if($this->error) : ?>
+        <div class="alert alert-danger" role="alert">
+            <?=$this->message ?>
+        </div>
+    <?php else: ?>
+        <div class="col-xs-12 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3 col-lg-4 col-lg-offset-4">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    Deseja remover a despesa/receita?
+                </div>
+                <div class="panel-body">
+                    <p>
+                        Descrição:
+                        <strong><?=$this->data->getDescricao() ?></strong>;
+                    </p>
+                    <p>
+                        Valor:
+                        <strong>R$ <?=number_format($this->data->getValor(), 2, ',', '.') ?></strong>;
+                    </p>
+                    <hr>
+                    <form class="container-fluid" method="post">
+                        <div class="col-xs-12 col-sm-6">
+                            <input type="submit" class="btn btn-danger btn-block" name="mes-delete" value="Remover">
+                        </div>
+                        <div class="col-xs-12 col-sm-6">
+                            <a href="<?=$this->url('mes', 'index', array(), true) ?>" class="btn btn-default btn-block" >Cancelar</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    <?php endif ?>
+<?php endif ?>
+
+<div class="col-xs-12" style="text-align: center; margin-bottom: 30px;">
+    <a href="<?=$this->url('mes', 'index', array(), true) ?>">Voltar</a>
+</div>

@@ -162,4 +162,46 @@ class Mes extends AbstractController{
             'messages' => array('generic' => "A receita/despesa foi salva com sucesso.")
         ), 'mes/form.phtml');
     }
+
+    public function deleteAction(){
+
+        $session = $this->app()->user();
+        if($session->isGuest())
+            $this->app()->redirect($this->request()->getBaseUri().'index.php');
+
+        $id = (int) $this->app()->request()->getQuery('financa_mes_id', 0);
+        if($id <= 0)
+            $this->app()->redirect($this->request()->getBaseUri().'index.php/mes/index');
+
+        $error = false;
+        $message = '';
+
+        try {
+            $mes = Financa::getCurrentMes($session->getData('id'));
+            $model = DespesaReceitaMes::findOneBy(array('id' => $id, 'financa' => $mes->getId()));
+        } catch (\Exception $e) {
+            $error = true;
+            $message = 'Um erro durante a operação com o banco de dados.';
+        }
+
+        if($model === null)
+            $this->app()->redirect($this->request()->getBaseUri().'index.php/fixos/index');
+
+        if($this->app()->request()->hasPost('mes-delete') && !$error){
+            try {
+                $model->delete();
+            } catch (\Exception $e) {
+                $error = true;
+                $message = 'Não foi possivel remover a despesa/receita.';
+            }
+
+            $model = null;
+        }
+
+        return self::getView(array(
+            'error' => false,
+            'data' => $model,
+            'messages' => $message
+        ));
+    }
 }
