@@ -21,8 +21,6 @@ class Fixos extends AbstractController{
             $fixos = array();
         }
 
-
-
         return self::getView(array(
             'data' => $fixos,
             'total' => count($fixos)
