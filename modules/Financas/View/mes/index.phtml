@@ -1,10 +1,35 @@
+<?php
+$renderer = '';
+if($this->mes !== null){
+
+    $month = (int) $this->mes->getMes()->format('m');
+    $year = (int) $this->mes->getMes()->format('Y');
+
+    switch ($month) {
+        case 1: $renderer = 'Janeiro'; break;
+        case 2: $renderer = 'Fevereiro'; break;
+        case 3: $renderer = 'Março'; break;
+        case 4: $renderer = 'Abril'; break;
+        case 5: $renderer = 'Maio'; break;
+        case 6: $renderer = 'Junho'; break;
+        case 7: $renderer = 'Julho'; break;
+        case 8: $renderer = 'Agosto'; break;
+        case 9: $renderer = 'Setembro'; break;
+        case 10: $renderer = 'Outubro'; break;
+        case 11: $renderer = 'Novembro'; break;
+        case 12: $renderer = 'Dezembro'; break;
+    }
+
+    $renderer .= '/'.$year;
+}
+?>
 <div class="page-header">
     <h1>Suas <strong>despesas</strong> e <strong>receitas</strong> por mês <small>(<?=$this->totalData ?>)</small></h1>
 </div>
 <div class="panel panel-default">
 
     <div class="panel-heading" style="position: relative">
-        <span class="panel-title">Suas despesas ou receitas que de <strong>mes</strong>:</span>
+        <span class="panel-title">Suas despesas ou receitas que de <strong><?=$renderer ?></strong>:</span>
         <a href="<?=$this->url('mes', 'create', array(), true) ?>" class="btn btn-xs btn-success" style="position: absolute; top: 50%; right: 15px; margin-top: -11px;">
             <span class="glyphicon glyphicon-asterisk" aria-hidden="true"></span>
             <span class="visible-lg-inline visible-md-inline">Adicionar</span>

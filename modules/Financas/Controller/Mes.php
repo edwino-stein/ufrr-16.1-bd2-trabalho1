@@ -17,16 +17,17 @@ class Mes extends AbstractController{
         Financa::initMes($session->getData('id'));
 
         try {
-            $meses = Financa::findBy(
-                array('usuario' => $session->getData('id')),
-                array('orderby' => 'mes', 'direction' => 'DESC')
-            );
+            $mes = Financa::getCurrentMes($session->getData('id'));
         } catch (\Exception $e) {
-            $meses = array();
+            return self::getView(array(
+                'data' => array(),
+                'totalData' => 0,
+                'mes' => null,
+            ));
         }
 
         try {
-            $data = DespesaReceitaMes::findAllByMes($session->getData('id'), $meses[0]->getMes());
+            $data = DespesaReceitaMes::findAllByMes($session->getData('id'), $mes->getMes());
         } catch (\Exception $e) {
             $data = array();
         }
@@ -34,8 +35,7 @@ class Mes extends AbstractController{
         return self::getView(array(
             'data' => $data,
             'totalData' => count($data),
-            'meses' => $meses,
-            'mesesTotal' => count($meses)
+            'mes' => $mes,
         ));
     }
 
