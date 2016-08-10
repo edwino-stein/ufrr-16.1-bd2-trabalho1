@@ -1,5 +1,7 @@
 <?php
 $renderer = '';
+$receitas = 0;
+$despesas = 0;
 if($this->mes !== null){
 
     $month = (int) $this->mes->getMes()->format('m');
@@ -47,6 +49,14 @@ if($this->mes !== null){
             </thead>
             <tbody>
                 <?php foreach($this->data as $item) : ?>
+                    <?php
+
+                    if($item->getValor() >= 0):
+                        $receitas += $item->getValor();
+                    else:
+                        $despesas += $item->getValor();
+                    endif;
+                    ?>
                     <tr>
                         <td><?=$item->getId() ?></td>
                         <td><?=$item->getDescricao() ?></td>
@@ -69,6 +79,26 @@ if($this->mes !== null){
                 <?php endforeach ?>
             </tbody>
         </table>
+        <?php $total = $receitas + $despesas; ?>
+        <div class="panel-footer" style="text-align: center;">
+            <div class="container-fluid">
+                <div class="col-xs-4" style="color: #449d44">
+                    <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>
+                    Receitas:
+                    <?=number_format(abs($receitas), 2, ',', '.')  ?>
+                </div>
+                <div class="col-xs-4" style="color: #d43f3a">
+                    <span class="glyphicon glyphicon-minus-sign" aria-hidden="true"></span>
+                    Despesas:
+                    <?=number_format(abs($despesas), 2, ',', '.')  ?>
+                </div>
+                <div class="col-xs-4" style="color: <?=$total >= 0 ? '#449d44' : '#d43f3a' ?>">
+                    <span class="glyphicon glyphicon-<?=$total >= 0 ? 'plus' : 'minus' ?>-sign" aria-hidden="true"></span>
+                    Total:
+                    <?=number_format(abs($total), 2, ',', '.')  ?>
+                </div>
+            </div>
+        </div>
     <?php else: ?>
         <div class="panel-body" style="text-align: center;">
             <h4>Nenhuma <strong>despesas</strong> ou <strong>receitas</strong> registrada.</h4>
