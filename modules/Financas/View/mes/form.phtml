@@ -34,13 +34,13 @@
                         <label class="col-xs-12" style="padding: 0;">Tipo</label>
                         <div class="radio col-xs-12 col-sm-6">
                             <label>
-                                <input type="radio" name="fixo-tipo" value="receita" <?=$this->data === null || ($this->data !== null && $this->data->getValor() >= 0) ? 'checked' : ''?> >
+                                <input type="radio" name="mes-tipo" value="receita" <?=$this->data === null || ($this->data !== null && $this->data->getValor() >= 0) ? 'checked' : ''?> >
                                 Receita
                             </label>
                         </div>
                         <div class="radio col-xs-12 col-sm-6" style="margin-top: 10px;">
                             <label>
-                                <input type="radio" name="fixo-tipo" value="despesa" <?=$this->data !== null && $this->data->getValor() < 0 ? 'checked' : ''?> >
+                                <input type="radio" name="mes-tipo" value="despesa" <?=$this->data !== null && $this->data->getValor() < 0 ? 'checked' : ''?> >
                                 Despesa
                             </label>
                         </div>
