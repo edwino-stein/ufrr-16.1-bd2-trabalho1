@@ -13,7 +13,7 @@ CREATE OR REPLACE VIEW despesas_receitas_mes_view AS
         despesas_receitas_mes,
         financas
     WHERE
-        despesas_receitas_mes.financas_id = financas.id;
-    ORDER BY despesas_receitas_mes.valor DESC
+        despesas_receitas_mes.financas_id = financas.id
+    ORDER BY despesas_receitas_mes.valor DESC;
 
 ALTER TABLE despesas_receitas_mes_view OWNER TO db2;
